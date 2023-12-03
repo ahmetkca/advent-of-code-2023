@@ -333,7 +333,6 @@ func TestGetFirstAndLastDigitPartTwo12(t *testing.T) {
 	t.Logf("got = %d, %d\n", first, last)
 }
 
-
 func TestGetFirstAndLastDigitPartTwo13(t *testing.T) {
 
 	input := "pxxtd793frjfckbhstcdhsrx58mksktwoneqx"
@@ -353,13 +352,11 @@ func TestGetFirstAndLastDigitPartTwo13(t *testing.T) {
 	t.Logf("got = %d, %d\n", first, last)
 }
 
-
-
 func TestGetFirstAndLastDigitPartTwo14(t *testing.T) {
 
 	input := "eighthreeightwone5"
 
-	want := []int{8,5}
+	want := []int{8, 5}
 	got := []int{}
 
 	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
@@ -374,3 +371,115 @@ func TestGetFirstAndLastDigitPartTwo14(t *testing.T) {
 	t.Logf("got = %d, %d\n", first, last)
 }
 
+func TestGetFirstAndLastDigitPartTwo15(t *testing.T) {
+
+	input := "xgjjmnlvznf2nineltmsevenine"
+
+	want := []int{2, 9}
+	got := []int{}
+
+	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+
+	got = append(got, first)
+	got = append(got, last)
+
+	if got[0] != want[0] || got[1] != want[1] {
+		t.Errorf("GetFirstAndLastDigitPartTwo(%q) got = %q, want %q", input, got, want)
+	}
+
+	t.Logf("got = %d, %d\n", first, last)
+}
+
+func TestGetFirstAndLastDigitPartTwo16(t *testing.T) {
+
+	input := "twoneighthreeightwoneight"
+
+	want := []int{2, 8}
+	got := []int{}
+
+	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+
+	got = append(got, first)
+	got = append(got, last)
+
+	if got[0] != want[0] || got[1] != want[1] {
+		t.Errorf("GetFirstAndLastDigitPartTwo(%q) got = %q, want %q", input, got, want)
+	}
+
+	t.Logf("got = %d, %d\n", first, last)
+}
+
+func TestGetFirstAndLastDigitPartTwo18(t *testing.T) {
+
+	inputs := []string{
+		"1twone",
+		"one2one",
+		"one12one",
+	}
+
+	wants := []struct {
+		f int
+		s int
+	}{
+		{1, 1},
+		{1, 1},
+		{1, 1},
+	}
+
+	sum := 0
+	expectedSum := 33
+
+	for i, input := range inputs {
+		want := wants[i]
+
+		first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+
+		if first != want.f || last != want.s {
+			t.Errorf("GetFirstAndLastDigitPartTwo(%q) got = %d, %d, want = %d, %d", input, first, last, want.f, want.s)
+		}
+
+		sum += ((10 * first) + last)
+	}
+
+	if sum != 33 {
+		t.Errorf("Expected sum = %d, got = %d", expectedSum, sum)
+	}
+}
+
+func TestGetFirstAndLastDigitPartTwo45(t *testing.T) {
+
+	input := "mkfone4ninefour"
+
+	want := []int{1, 4}
+	got := []int{}
+
+	first, last := GetFirstAndLast([]byte(input))
+
+	got = append(got, first)
+	got = append(got, last)
+
+	if got[0] != want[0] || got[1] != want[1] {
+		t.Errorf("GetFirstAndLastDigitPartTwo(%q) got = %q, want %q", input, got, want)
+	}
+
+	t.Logf("got = %d, %d\n", first, last)
+}
+
+func TestGetFirstAndLastDigitPartTwo46(t *testing.T) {
+
+	input := "oneighthreeightwone2"
+
+	want := []int{1, 2}
+	got := []int{}
+
+	first, last := GetFirstAndLast([]byte(input))
+
+	got = append(got, first)
+	got = append(got, last)
+
+	if got[0] != want[0] || got[1] != want[1] {
+		t.Errorf("GetFirstAndLastDigitPartTwo(%q) got = %q, want %q", input, got, want)
+	}
+
+	t.Logf("got = %d, %d\n", first, last)
+}

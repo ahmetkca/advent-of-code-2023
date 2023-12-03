@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"os"
 	"strings"
 )
@@ -38,7 +39,6 @@ var digitSpelledOutToNumberMap = map[string]int{
 }
 
 func DoesItStartWithSpelledOutDigit(spelledOutDigit string) (int, bool) {
-
 	for k := range digitSpelledOutToNumberMap {
 		if strings.HasPrefix(k, spelledOutDigit) {
 			digit, ok := digitSpelledOutToNumberMap[spelledOutDigit]
@@ -52,10 +52,10 @@ func DoesItStartWithSpelledOutDigit(spelledOutDigit string) (int, bool) {
 	return -1, false
 }
 
-func IsDigit(ch rune) (int8, bool) {
+func IsDigit(ch rune) (int, bool) {
 	for i, digit := range digits {
 		if ch == digit {
-			return int8(i), true
+			return i, true
 		}
 	}
 	return -1, false
@@ -137,8 +137,126 @@ func GetFirstAndLastDigitSecondPart(input []byte) (int, int) {
 	return first, last
 }
 
-func main() {
+// returns -1, -1 if not successful
+func GetFirstAndLast1(input []byte) (int, int) {
+	keys := make([]string, 0, len(digitSpelledOutToNumberMap))
+	for k := range digitSpelledOutToNumberMap {
+		keys = append(keys, k)
+	}
 
+	line := string(input)
+	first, last := -1, -1
+	for len(line) > 0 {
+		ch := line[0]
+		digit, isDigit := IsDigit(rune(ch))
+		hasPrefix := false
+		if isDigit {
+			if first == -1 {
+				first = int(digit)
+			} else {
+				last = int(digit)
+			}
+		} else {
+			for _, k := range keys {
+				fmt.Printf("%s, %s\n", line, k)
+				if strings.HasPrefix(line, k) {
+					line = strings.TrimPrefix(line, k)
+					digit, ok := digitSpelledOutToNumberMap[k]
+					fmt.Printf("Found: %d, %v\n", digit, ok)
+					if ok {
+						if first == -1 {
+							first = digit
+						} else {
+							last = digit
+						}
+						hasPrefix = true
+						break
+					}
+				}
+			}
+		}
+		if !hasPrefix {
+			line = line[1:]
+		}
+	}
+
+	if last == -1 {
+		last = first
+	}
+
+	return first, last
+}
+
+// find the last digit in the input
+// last digit can be in either number opr spelled out format
+// ex. eight or 8
+func FindLast(input []byte) int {
+	line := string(input)
+	lastIndex := 1
+	last := -1
+
+	for spelledOutDigit, digitNum := range digitSpelledOutToNumberMap {
+		index := strings.LastIndex(line, spelledOutDigit)
+		if index != -1 {
+			if last >= lastIndex {
+				last = digitNum
+				lastIndex = index
+			}
+		}
+	}
+
+	for i, ch := range line {
+		if digitNum, isDigit := IsDigit(ch); isDigit {
+			if i > lastIndex {
+				last = digitNum
+				lastIndex = i
+			}
+		}
+	}
+
+	return last
+}
+
+// Find the first digit in the input
+// digit can be in number or spelled out format
+// ex. one or 1
+func FindFirst(input []byte) int {
+	line := string(input)
+	firstIndex := math.MaxInt
+	first := -1
+
+	for spelledOutDigit, digitNum := range digitSpelledOutToNumberMap {
+		index := strings.Index(line, spelledOutDigit)
+		if index != -1 {
+			if index <= firstIndex {
+				first = digitNum
+				firstIndex = index
+			}
+		}
+	}
+
+	for i, ch := range line {
+		if digitNum, isDigit := IsDigit(ch); isDigit {
+			if i < firstIndex {
+				first = digitNum
+				firstIndex = i
+			}
+		}
+	}
+
+	return first
+}
+
+func GetFirstAndLast(input []byte) (int, int) {
+	first, last := FindFirst(input), FindLast(input)
+
+	if last == -1 {
+		return first, first
+	}
+	return first, last
+}
+
+func main() {
 	f, err := os.Open(PUZZLE_INPUT_FILE)
 	if err != nil {
 		log.Fatal(err)
@@ -151,10 +269,11 @@ func main() {
 
 	for running {
 		data, err := reader.ReadBytes('\n')
+		data = []byte("mkfone4ninefour")
 
 		log.Printf("line = %s", string(data))
 
-		first, last := GetFirstAndLastDigitSecondPart(data)
+		first, last := GetFirstAndLast(data)
 
 		calibrationValue := 10*int(first) + int(last)
 
@@ -171,5 +290,4 @@ func main() {
 	}
 
 	fmt.Printf("Sum: %d\n", sum)
-
 }
