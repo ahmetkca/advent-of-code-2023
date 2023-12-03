@@ -33,10 +33,10 @@ func TestIsDigit(t *testing.T) {
 func TestGetFirstAndLastDigitPartOne(t *testing.T) {
 	input := "xsdm7lhcjzk3hstcf"
 
-	want := []int8{7, 3}
-	got := []int8{}
+	want := []int{7, 3}
+	got := []int{}
 
-	first, last := GetFirstAndLastDigitPartOne([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -46,67 +46,8 @@ func TestGetFirstAndLastDigitPartOne(t *testing.T) {
 	}
 }
 
-func TestDoesItStartWithSpelledOutDigit(t *testing.T) {
-	input := "five"
 
-	digit, doesItStart := DoesItStartWithSpelledOutDigit(input)
 
-	wantDigit, wantDoesItStart := 5, true
-
-	if digit != wantDigit || doesItStart != wantDoesItStart {
-		t.Errorf("DoesItStartWithSpelledOutDigit(%q) got = %q, %v, want = %q, %v", input, digit, doesItStart, wantDigit, wantDoesItStart)
-	}
-}
-
-func TestDoesItStartWithSpelledOutDigit2(t *testing.T) {
-	input := "seven"
-
-	digit, doesItStart := DoesItStartWithSpelledOutDigit(input)
-
-	wantDigit, wantDoesItStart := 7, true
-
-	if digit != wantDigit || doesItStart != wantDoesItStart {
-		t.Errorf("DoesItStartWithSpelledOutDigit(%q) got = %q, %v, want = %q, %v", input, digit, doesItStart, wantDigit, wantDoesItStart)
-	}
-}
-
-func TestDoesItStartWithSpelledOutDigit3(t *testing.T) {
-	input := "rgbfiv"
-
-	digit, doesItStart := DoesItStartWithSpelledOutDigit(input)
-
-	wantDigit, wantDoesItStart := -1, false
-
-	if digit != wantDigit || doesItStart != wantDoesItStart {
-		t.Errorf("DoesItStartWithSpelledOutDigit(%q) got = %q, %v, want = %q, %v", input, digit, doesItStart, wantDigit, wantDoesItStart)
-	}
-}
-
-func TestDoesItStartWithSpelledOutDigit5(t *testing.T) {
-	input := "r"
-
-	digit, doesItStart := DoesItStartWithSpelledOutDigit(input)
-
-	t.Logf("%d, %v", digit, doesItStart)
-
-	wantDigit, wantDoesItStart := -1, false
-
-	if digit != wantDigit || doesItStart != wantDoesItStart {
-		t.Errorf("DoesItStartWithSpelledOutDigit(%q) got = %q, %v, want = %q, %v", input, digit, doesItStart, wantDigit, wantDoesItStart)
-	}
-}
-
-func TestDoesItStartWithSpelledOutDigit4(t *testing.T) {
-	input := "fiv"
-
-	digit, doesItStart := DoesItStartWithSpelledOutDigit(input)
-
-	wantDigit, wantDoesItStart := -1, true
-
-	if digit != wantDigit && doesItStart != wantDoesItStart {
-		t.Errorf("DoesItStartWithSpelledOutDigit(%q) got = %q, %v, want = %q, %v", input, digit, doesItStart, wantDigit, wantDoesItStart)
-	}
-}
 
 func TestGetFirstAndLastDigitPartTwo(t *testing.T) {
 
@@ -115,7 +56,7 @@ func TestGetFirstAndLastDigitPartTwo(t *testing.T) {
 	want := []int{5, 3}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -132,7 +73,7 @@ func TestGetFirstAndLastDigitPartTwo2(t *testing.T) {
 	want := []int{1, 3}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -149,7 +90,7 @@ func TestGetFirstAndLastDigitPartTwo3(t *testing.T) {
 	want := []int{1, 5}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -166,7 +107,7 @@ func TestGetFirstAndLastDigitPartTwo4(t *testing.T) {
 	want := []int{9, 9}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -183,7 +124,7 @@ func TestGetFirstAndLastDigitPartTwo5(t *testing.T) {
 	want := []int{6, 6}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -200,7 +141,7 @@ func TestGetFirstAndLastDigitPartTwo6(t *testing.T) {
 	want := []int{9, 9}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -217,7 +158,7 @@ func TestGetFirstAndLastDigitPartTwo7(t *testing.T) {
 	want := []int{2, 9}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -255,7 +196,7 @@ func TestGetFirstAndLastDigitPartTwo8(t *testing.T) {
 	for i, input := range inputs {
 		want := wants[i]
 
-		first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+		first, last := GetFirstAndLast([]byte(input))
 
 		if first != want.f || last != want.s {
 			t.Errorf("GetFirstAndLastDigitPartTwo(%q) got = %d, %d, want = %d, %d", input, first, last, want.f, want.s)
@@ -270,7 +211,7 @@ func TestGetFirstAndLastDigitPartTwo9(t *testing.T) {
 	want := []int{8, 3}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -287,7 +228,7 @@ func TestGetFirstAndLastDigitPartTwo10(t *testing.T) {
 	want := []int{7, 8}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -304,7 +245,7 @@ func TestGetFirstAndLastDigitPartTwo11(t *testing.T) {
 	want := []int{7, 8}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -321,7 +262,7 @@ func TestGetFirstAndLastDigitPartTwo12(t *testing.T) {
 	want := []int{3, 2}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -340,7 +281,7 @@ func TestGetFirstAndLastDigitPartTwo13(t *testing.T) {
 	want := []int{7, 1}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -359,7 +300,7 @@ func TestGetFirstAndLastDigitPartTwo14(t *testing.T) {
 	want := []int{8, 5}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -378,7 +319,7 @@ func TestGetFirstAndLastDigitPartTwo15(t *testing.T) {
 	want := []int{2, 9}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -397,7 +338,7 @@ func TestGetFirstAndLastDigitPartTwo16(t *testing.T) {
 	want := []int{2, 8}
 	got := []int{}
 
-	first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+	first, last := GetFirstAndLast([]byte(input))
 
 	got = append(got, first)
 	got = append(got, last)
@@ -432,7 +373,7 @@ func TestGetFirstAndLastDigitPartTwo18(t *testing.T) {
 	for i, input := range inputs {
 		want := wants[i]
 
-		first, last := GetFirstAndLastDigitSecondPart([]byte(input))
+		first, last := GetFirstAndLast([]byte(input))
 
 		if first != want.f || last != want.s {
 			t.Errorf("GetFirstAndLastDigitPartTwo(%q) got = %d, %d, want = %d, %d", input, first, last, want.f, want.s)
