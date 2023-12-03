@@ -8,6 +8,7 @@ import (
 	"math"
 	"os"
 	"strings"
+	"time"
 )
 
 const PUZZLE_INPUT_FILE = "input.txt"
@@ -57,7 +58,6 @@ func FindLast(input []byte) int {
 
 	for spelledOutDigit, digitNum := range digitSpelledOutToNumberMap {
 		index := strings.LastIndex(line, spelledOutDigit)
-		fmt.Printf("index: %d, lastIndex: %d, spelledOutDigit: %s, last: %d\n", index, lastIndex, spelledOutDigit, last)
 		if index != -1 {
 			if index >= lastIndex {
 				last = digitNum
@@ -68,7 +68,6 @@ func FindLast(input []byte) int {
 
 	for i, ch := range line {
 		if digitNum, isDigit := IsDigit(ch); isDigit {
-			fmt.Printf("index: %d, lastIndex: %d, last: %d", i, lastIndex, last)
 			if i > lastIndex {
 				last = digitNum
 				lastIndex = i
@@ -119,6 +118,7 @@ func GetFirstAndLast(input []byte) (int, int) {
 }
 
 func main() {
+	start := time.Now()
 	f, err := os.Open(PUZZLE_INPUT_FILE)
 	if err != nil {
 		log.Fatal(err)
@@ -132,22 +132,16 @@ func main() {
 	for running {
 		data, err := reader.ReadBytes('\n')
 
-		log.Printf("line = %s", string(data))
-
 		first, last := GetFirstAndLast(data)
 
 		calibrationValue := 10*int(first) + int(last)
-
-		fmt.Printf("calibration value = %d\n", calibrationValue)
 
 		sum += calibrationValue
 
 		if err == io.EOF {
 			running = false
 		}
-
-		log.Println(err)
 	}
-
 	fmt.Printf("Sum: %d\n", sum)
+	fmt.Printf("Time: %v\n", time.Since(start))
 }
