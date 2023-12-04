@@ -69,8 +69,21 @@ func (number *Number) Value() (int, error) {
 }
 
 type Symbol struct {
-	Position int
-	Value    rune
+	Position     int
+	Value        rune
+	adjacentNums []*Number
+}
+
+func NewSymbol(position int, value rune) *Symbol {
+	return &Symbol{
+		Position:     position,
+		Value:        value,
+		adjacentNums: make([]*Number, 0),
+	}
+}
+
+func (symbol *Symbol) AddAdjacentNumber(number *Number) {
+	symbol.adjacentNums = append(symbol.adjacentNums, number)
 }
 
 func (symbol *Symbol) String() string {
@@ -123,7 +136,8 @@ func (number *Number) IsValidNumber(grid *Grid) bool {
 
 	for _, indx := range number.Indexes {
 		for _, direction := range directions {
-			if _, ok := grid.symbols.Symbols[indx+direction]; ok {
+			if symbol, ok := grid.symbols.Symbols[indx+direction]; ok {
+				symbol.AddAdjacentNumber(number)
 				return true
 			}
 		}
@@ -208,10 +222,7 @@ func main() {
 		} else {
 			// it could a valid symbol or '.'
 			if currentSymbol == nil {
-				currentSymbol = &Symbol{
-					Position: i,
-					Value:    ch,
-				}
+				currentSymbol = NewSymbol(i, ch)
 				if currentSymbol.IsValidSymbol() {
 					symbols.AddSymbol(currentSymbol)
 					currentSymbol = nil
@@ -231,6 +242,24 @@ func main() {
 	fmt.Println("Width of the engineering schematic is ", WIDTH)
 
 	validNums := grid.FindValidNumbers()
+
+	sum2 := 0
+	for _, symbol := range symbols.Symbols {
+		if symbol.Value == '*' && len(symbol.adjacentNums) == 2 {
+			num1, err := symbol.adjacentNums[0].Value()
+			if err != nil {
+				log.Fatalln(err)
+			}
+			num2, err := symbol.adjacentNums[1].Value()
+			if err != nil {
+				log.Fatalln(err)
+			}
+			sum2 += (num1 * num2)
+		}
+	}
+
+	fmt.Printf("Sum of all of the gear ratios in the engine schematic is %d\n", sum2)
+
 	sum := 0
 	for _, vNum := range validNums {
 		sum += vNum
